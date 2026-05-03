@@ -55,7 +55,10 @@ def annualized_vol(returns: pd.Series, periods_per_year=252) -> float:
 
 def rolling_vol(returns: pd.Series, window, periods_per_year=252) -> pd.Series:
     """
-    TODO - Add docstring for rolling window 
+    Annualizes daily volatility by scaling by sqrt(periods_per_year) for a given
+    window size. Returns a series of the annualized vol for different windows
+    in the returns series. Helpful for identifying risk and trade sizing for 
+    different volatility regimes in the series.
     """
     r_vol = historical_vol(returns, window=window) * np.sqrt(periods_per_year) 
     return r_vol 
