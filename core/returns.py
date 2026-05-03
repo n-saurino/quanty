@@ -22,6 +22,7 @@ def main():
 
     l_returns = log_returns(price_series).rename("Log Returns")
     print(l_returns)
+
     return 0
 
 
@@ -34,6 +35,8 @@ def simple_returns(prices: pd.Series) -> pd.Series:
     # similar to returns.pct_change() but without fill_method
     # to forward fill NaNs
     returns = returns.dropna()
+    returns.name = "Simple Returns"
+
     return returns
 
 
@@ -44,6 +47,8 @@ def log_returns(prices: pd.Series) -> pd.Series:
     """
     returns = np.log(prices/prices.shift(1)) 
     returns = returns.dropna()
+    returns.name = "Log Returns"
+
     return returns
 
 if __name__ == "__main__":

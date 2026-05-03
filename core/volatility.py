@@ -41,7 +41,7 @@ def historical_vol(returns: pd.Series, window=None) -> float | pd.Series:
     if window is None:
         return returns.std()
     else:
-        return returns.rolling(window).std()
+        return returns.rolling(window).std().rename("Rolling Volatility")
 
 
 def annualized_vol(returns: pd.Series, periods_per_year=252) -> float:
@@ -51,6 +51,7 @@ def annualized_vol(returns: pd.Series, periods_per_year=252) -> float:
     on a desk. 
     """
     a_vol = historical_vol(returns) * np.sqrt(periods_per_year)
+
     return a_vol
 
 def rolling_vol(returns: pd.Series, window, periods_per_year=252) -> pd.Series:
@@ -61,6 +62,8 @@ def rolling_vol(returns: pd.Series, window, periods_per_year=252) -> pd.Series:
     different volatility regimes in the series.
     """
     r_vol = historical_vol(returns, window=window) * np.sqrt(periods_per_year) 
+    r_vol.name = "Rolling Annualized Volatility"
+
     return r_vol 
 
 if __name__ == "__main__":
