@@ -66,5 +66,26 @@ def rolling_vol(returns: pd.Series, window, periods_per_year=252) -> pd.Series:
 
     return r_vol 
 
+def ewma_vol(returns: pd.Series, lam: float=0.94) -> pd.Series:
+    """
+    Calculates the exponentially weighted daily volatility to account for 
+    vol regime changes by weighting recent return and vol more heavily than 
+    older data in the window
+    """
+    # preallocate list of variances
+    variance = np.zeros(len(returns))
+
+    # seed the first variance value
+    variance[0] = returns.var()
+
+    # prev_variance needs to be updated with the variance that we calculate 
+    # in this formula for each succeeding calculation
+    for i in range(1, len(returns)):
+        variance[i] = lam*variance[i-1] + (1-lam)*returns.iloc[i-1]**2
+
+    result = pd.Series(np.sqrt(variance), index=returns.index)
+
+    return result
+
 if __name__ == "__main__":
     main()
